@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css22?family=Source+Sans+Prop:wght@300;400;700&display=swap');
+
+$fontDefault: 'Source Sans Pro';
+
+body{
+    font-family: $fontDefault;
+    font-size: 1em;
+    color: #444;
+}
