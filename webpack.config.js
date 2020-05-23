@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -55,6 +56,9 @@ module.exports = {
                     to: path.resolve(__dirname, './build/static/')
                 }
             ]
+        }),
+        new webpack.DefinePlugin({
+            __isClientSide__: "true"
         })
     ]
 };
