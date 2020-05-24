@@ -1,5 +1,10 @@
 import React from 'react';
+import serialize from 'serialize-javascript';
 import App from './components/App';
+
+import { Provider } from 'react-redux';
+import createStore from './store';
+import { setAge } from './reducers/person';
 
 const fs = require('fs');
 const path = require('path');
@@ -34,8 +39,19 @@ app.get('*', (req, res) => {
             console.error(err);
             res.status(404).send('Error: 404');
         }
-        const reactHtml = renderToString(<App />);
-        const html = data.replace('{{HTML}}', reactHtml);
+
+        const store = createStore();
+        store.dispatch(setAge(75));
+
+        const reactHtml = renderToString(
+            <Provider store={store}>
+                <App />
+            </Provider>
+        );
+
+        const html = data
+            .replace('{{HTML}}', reactHtml)
+            .replace('{{INITIAL_STATE}}', serialize(store.getState()), { isJson: true });
         res.status(200).send(html);
     });
 });
