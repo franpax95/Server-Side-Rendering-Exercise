@@ -4,7 +4,7 @@ import App from './components/App';
 
 import { Provider } from 'react-redux';
 import createStore from './store';
-import { setAge } from './reducers/person';
+import { setAge, fetchFriends } from './reducers/person';
 
 const fs = require('fs');
 const path = require('path');
@@ -32,6 +32,21 @@ app.use(
     express.static(path.resolve('build/bundle.js'))
 );
 
+/**
+ * dummy API endpoint which returns an array with the names of five of the friends of John Doe with delay
+ */
+app.get('/api/friends', (req, res) => {
+    // setTimeout(() => {
+    //     res.json({
+    //         "friends": [ 'James', 'Eric', 'Olivia', 'Emma', 'Charlotte' ]
+    //     });
+    // }, 1000);
+
+    res.json({
+        "friends": [ 'James', 'Eric', 'Olivia', 'Emma', 'Charlotte' ]
+    });
+})
+
 app.get('*', (req, res) => {
     const filePath = path.resolve('build', 'index.html');
     fs.readFile(filePath, 'utf-8', (err, data) => {
@@ -41,18 +56,25 @@ app.get('*', (req, res) => {
         }
 
         const store = createStore();
-        store.dispatch(setAge(75));
+        const promises = [
+            store.dispatch(setAge(75)),
+            store.dispatch(fetchFriends())
+        ];
 
-        const reactHtml = renderToString(
-            <Provider store={store}>
-                <App />
-            </Provider>
-        );
-
-        const html = data
-            .replace('{{HTML}}', reactHtml)
-            .replace('{{INITIAL_STATE}}', serialize(store.getState()), { isJson: true });
-        res.status(200).send(html);
+        Promise
+            .all(promises)
+            .then(() => {
+                const reactHtml = renderToString(
+                    <Provider store={store}>
+                        <App />
+                    </Provider>
+                );
+        
+                const html = data
+                    .replace('{{HTML}}', reactHtml)
+                    .replace('{{INITIAL_STATE}}', serialize(store.getState()), { isJson: true });
+                res.status(200).send(html);
+            });
     });
 });
 
