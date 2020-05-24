@@ -7,3 +7,18 @@ body{
     font-size: 1em;
     color: #444;
 }
+
+div.menuLink {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 1px;
+    background-color: #ddd;
+
+    & > a {
+        color: blue;
+    }
+
+    &.active {
+        background-color: #bbb;
+    }
+}

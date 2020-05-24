@@ -37,7 +37,7 @@ export const { ageIncrement, ageDecrement, setAge } = slice.actions;
 
 export const fetchFriends = () => dispatch => {
     const { fetchFriendsStart, fetchFriendsSuccess } = slice.actions;
-    
+
     dispatch(fetchFriendsStart());
 
     return fetch('http://localhost:8081/api/friends')
@@ -45,7 +45,10 @@ export const fetchFriends = () => dispatch => {
         .then(json => json.friends)
         .then(friends => dispatch(
             fetchFriendsSuccess(friends)
-        ));
+        ))
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 export default slice.reducer;

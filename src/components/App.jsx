@@ -1,4 +1,9 @@
 import React, { useEffect } from 'react';
+
+import { renderRoutes } from 'react-router-config';
+import routes from '../routes';
+import MenuLink from './MenuLink';
+
 import { connect } from 'react-redux';
 import { ageIncrement, ageDecrement, setAge, fetchFriends } from '../reducers/person';
 
@@ -39,6 +44,14 @@ const App = ({
             </p>
             <p>Is fetching: {(isLoading) ? 'Yes, please wait...' : 'No'}</p>
             <p>Friends: {friends.join(', ')}</p>
+
+            <div>
+                {routes.map(route => (
+                    <MenuLink route={route} />
+                ))}
+            </div>
+
+            {renderRoutes(routes)}
         </>
     );
 }

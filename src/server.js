@@ -1,5 +1,7 @@
 import React from 'react';
 import serialize from 'serialize-javascript';
+import { StaticRouter } from 'react-router-dom';
+
 import App from './components/App';
 
 import { Provider } from 'react-redux';
@@ -66,7 +68,9 @@ app.get('*', (req, res) => {
             .then(() => {
                 const reactHtml = renderToString(
                     <Provider store={store}>
-                        <App />
+                        <StaticRouter location={req.url}>
+                            <App />
+                        </StaticRouter>
                     </Provider>
                 );
         
@@ -74,6 +78,9 @@ app.get('*', (req, res) => {
                     .replace('{{HTML}}', reactHtml)
                     .replace('{{INITIAL_STATE}}', serialize(store.getState()), { isJson: true });
                 res.status(200).send(html);
+            })
+            .catch(err => {
+                console.log(err);
             });
     });
 });
