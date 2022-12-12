@@ -21,7 +21,7 @@
     "copy-webpack-plugin": "^6.0.1",
     "css-loader": "^3.5.3",
     "export": "^0.1.337",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "html-webpack-plugin": "^4.3.0",
     "ignore-loader": "^0.1.2",
     "isomorphic-fetch": "^2.2.1",
